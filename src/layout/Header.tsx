@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RiNotification3Line, RiSearchLine } from '@remixicon/react';
+import { Menu, MenuItem, IconButton, Avatar } from '@mui/material';
+import { AccountCircle } from '@mui/icons-material'; // Ensure this import is correctly resolved
+import { useNavigate } from 'react-router-dom';
+import { userData } from '../util/dummyData';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -96,10 +100,43 @@ const StyledButton = styled.button`
   }
 `;
 
+const FlexDiv = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LogoDiv = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
 const Header = () => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const goToHome = () => {
+    navigate('/');
+  };
+
   return (
     <StyledHeader>
-      <Logo>K-elog</Logo>
+      <LogoDiv onClick={goToHome}>
+        <img
+          src="/logo512.png"
+          alt="K-elog Logo"
+          style={{ width: '30px', marginRight: '0.5rem', marginTop: '-0.3rem' }}
+        />
+        <Logo>K-elog</Logo>
+      </LogoDiv>
       <NavIcons>
         <IconStyle>
           <RiNotification3Line />
@@ -109,6 +146,28 @@ const Header = () => {
         </IconStyle>
         <WriteButton>새 글 작성</WriteButton>
         <StyledButton>로그인</StyledButton>
+        <FlexDiv>
+          <IconButton onClick={handleClick}>
+            {userData.thumbImage ? <Avatar src={userData.thumbImage} alt="User Profile" /> : <AccountCircle />}
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+          >
+            <MenuItem onClick={handleClose}>프로필</MenuItem>
+            <MenuItem onClick={handleClose}>설정</MenuItem>
+            <MenuItem onClick={handleClose}>로그아웃</MenuItem>
+          </Menu>
+        </FlexDiv>
       </NavIcons>
     </StyledHeader>
   );
