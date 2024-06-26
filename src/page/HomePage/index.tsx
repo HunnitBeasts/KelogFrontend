@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { RiTimeLine, RiWifiLine, RiLineChartLine } from '@remixicon/react';
@@ -38,10 +38,19 @@ const IconWrapper = styled.div`
   }
 `;
 
+const FlexDiv = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const Home = () => {
   const location = useLocation();
 
   const [activeTab, setActiveTab] = useState(location.pathname);
+
+  useEffect(() => {
+    setActiveTab(location.pathname);
+  }, [location.pathname]);
 
   const handleTabClick = (path: string) => {
     setActiveTab(path);
@@ -70,14 +79,17 @@ const Home = () => {
             피드
           </Tab>
         </div>
-        <Select defaultValue="this_week" style={{ width: 120 }}>
-          <Select.Option value="this_week">이번 주</Select.Option>
-          <Select.Option value="this_month">이번 달</Select.Option>
-          <Select.Option value="this_year">올해</Select.Option>
-        </Select>
+        <FlexDiv>
+          <Select defaultValue="this_day" style={{ width: 120 }}>
+            <Select.Option value="this_day">오늘</Select.Option>
+            <Select.Option value="this_week">이번 주</Select.Option>
+            <Select.Option value="this_month">이번 달</Select.Option>
+            <Select.Option value="this_year">올해</Select.Option>
+          </Select>
+        </FlexDiv>
       </Tabs>
       <Routes>
-        <Route path="/" element={<Navigate to="/trend" />} />
+        <Route path="/" element={<Navigate to="/trend" replace />} />
         <Route path="/trend" element={<TrendPage />} />
         <Route path="/latest" element={<LatestPage />} />
         <Route path="/feed" element={<FeedPage />} />
