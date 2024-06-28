@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RiNotification3Line, RiSearchLine } from '@remixicon/react';
 import { Menu, MenuItem, IconButton, Avatar } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material'; // Ensure this import is correctly resolved
+import { AccountCircle } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { userData } from '../util/dummyData';
+import Modal from '../component/Modal';
+import Auth from '../component/Auth';
+import { useModal } from '../hooks/custom/useModal';
+import { isLoginSelector } from '../recoil/selector/userSelecotr';
+import { useLogout } from '../hooks/user';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -114,6 +120,9 @@ const LogoDiv = styled.div`
 const Header = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const isLogin = useRecoilValue(isLoginSelector);
+  const { isModalOpen, openModal } = useModal();
+  const logout = useLogout();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -125,6 +134,11 @@ const Header = () => {
 
   const goToHome = () => {
     navigate('/');
+  };
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    logout();
   };
 
   return (
@@ -144,31 +158,41 @@ const Header = () => {
         <IconStyle>
           <RiSearchLine />
         </IconStyle>
-        <WriteButton>새 글 작성</WriteButton>
-        <StyledButton>로그인</StyledButton>
-        <FlexDiv>
-          <IconButton onClick={handleClick}>
-            {userData.thumbImage ? <Avatar src={userData.thumbImage} alt="User Profile" /> : <AccountCircle />}
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={handleClose}>프로필</MenuItem>
-            <MenuItem onClick={handleClose}>설정</MenuItem>
-            <MenuItem onClick={handleClose}>로그아웃</MenuItem>
-          </Menu>
-        </FlexDiv>
+        {isLogin ? (
+          <>
+            <WriteButton>새 글 작성</WriteButton>
+            <FlexDiv>
+              <IconButton onClick={handleClick}>
+                {userData.thumbImage ? <Avatar src={userData.thumbImage} alt="User Profile" /> : <AccountCircle />}
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <MenuItem onClick={handleClose}>프로필</MenuItem>
+                <MenuItem onClick={handleClose}>설정</MenuItem>
+                <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+              </Menu>
+            </FlexDiv>
+          </>
+        ) : (
+          <StyledButton onClick={openModal}>로그인</StyledButton>
+        )}
       </NavIcons>
+      {isModalOpen && (
+        <Modal>
+          <Auth />
+        </Modal>
+      )}
     </StyledHeader>
   );
 };

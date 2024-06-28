@@ -3,8 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import HomePage from './page/HomePage';
 import AppLayout from './layout/AppLayout';
-// import LatestPage from './page/HomePage/LatestPage';
-// import FeedPage from './page/HomePage/FeedPage';
 
 const App = () => {
   return (
