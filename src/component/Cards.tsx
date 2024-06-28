@@ -23,6 +23,10 @@ const Card = styled.div`
   }
 
   @media (max-width: 750px) {
+    width: calc(50% - 1rem);
+  }
+
+  @media (max-width: 576px) {
     width: calc(100% - 1rem);
   }
 `;
