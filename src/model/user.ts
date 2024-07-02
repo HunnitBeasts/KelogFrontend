@@ -6,3 +6,12 @@ export interface PostLoginRequest {
 export interface PostLoginResponse {
   token: string;
 }
+
+export interface PostJoinRequest {
+  name: string;
+  nickname: string;
+  id: string;
+  email: string;
+  password: string;
+  intro: string;
+}

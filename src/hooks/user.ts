@@ -3,8 +3,8 @@ import { AxiosResponse } from 'axios';
 import { useSetRecoilState } from 'recoil';
 import { userState } from '../recoil/atom/userState';
 import { useModal } from './custom/useModal';
-import { PostLoginRequest, PostLoginResponse } from '../model/user';
-import { login } from '../api/user';
+import { PostJoinRequest, PostLoginRequest, PostLoginResponse } from '../model/user';
+import { join, login } from '../api/user';
 import { removeToken, setToken } from '../util/auth';
 
 export const useLogin = () => {
@@ -34,4 +34,10 @@ export const useLogout = () => {
       token: '',
     }));
   };
+};
+
+export const useJoin = () => {
+  return useMutation({
+    mutationFn: (data: PostJoinRequest) => join(data),
+  });
 };
