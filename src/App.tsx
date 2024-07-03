@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import HomePage from './page/HomePage';
 import AppLayout from './layout/AppLayout';
@@ -9,6 +9,7 @@ const App = () => {
     <RecoilRoot>
       <Routes>
         <Route path="/" element={<AppLayout />}>
+          <Route index element={<Navigate to="/trend" />} />
           <Route path="/*" element={<HomePage />} />
         </Route>
       </Routes>
