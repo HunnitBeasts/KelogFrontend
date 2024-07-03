@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { RiTimeLine, RiWifiLine, RiLineChartLine } from '@remixicon/react';
 import { Select } from 'antd';
 import TrendPage from './TrendPage';
@@ -89,7 +89,7 @@ const Home = () => {
         </FlexDiv>
       </Tabs>
       <Routes>
-        <Route path="/" element={<Navigate to="/trend" replace />} />
+        <Route path="/" element={<TrendPage />} />
         <Route path="/trend" element={<TrendPage />} />
         <Route path="/latest" element={<LatestPage />} />
         <Route path="/feed" element={<FeedPage />} />
