@@ -13,7 +13,7 @@ const CardContainer = styled.div`
 
 const TrendPage = () => {
   const [page, setPage] = useState(20);
-  const { data, refetch, isLoading, isFetching } = useFetchPosts({ page });
+  const { data, refetch, isLoading, isFetching } = useFetchPosts({ page, postType: 'trending' });
 
   const onLoadMore = () => {
     setPage((prevPage) => prevPage + 20);
