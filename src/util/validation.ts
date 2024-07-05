@@ -1,4 +1,3 @@
-// validation.ts
 export const isValidUserId = (userId: string) => {
   return /^[a-z]+[a-z0-9]{4,14}$/g.test(userId);
 };
