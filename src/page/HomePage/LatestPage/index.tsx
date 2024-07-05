@@ -1,7 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Cards from '../../../component/Cards';
+import { useFetchPosts } from '../../../hooks/posts';
+import InfiniteList from '../../../component/InfiniteList';
 
-const index = () => {
-  return <div>index</div>;
+const CardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+`;
+
+const LatestPage = () => {
+  const [page, setPage] = useState(20);
+  const { data, refetch, isLoading, isFetching } = useFetchPosts({ page, postType: 'latest' });
+
+  const onLoadMore = () => {
+    setPage((prevPage) => prevPage + 20);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [page]);
+
+  return (
+    <InfiniteList onLoadMore={onLoadMore} isLoading={isLoading} isFetching={isFetching}>
+      <CardContainer>{data?.results.map((post) => <Cards key={post.postId} post={post} />)}</CardContainer>
+    </InfiniteList>
+  );
 };
 
-export default index;
+export default LatestPage;
