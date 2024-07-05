@@ -1,13 +1,7 @@
 import React from 'react';
 import { RiHeartFill } from '@remixicon/react';
 import styled from 'styled-components';
-
-const CardContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
-`;
+import { GetPostResponse } from '../model/posts';
 
 const Card = styled.div`
   width: calc(25% - 1rem);
@@ -109,49 +103,33 @@ const DateContent = styled.div`
   padding: 0.5rem 0;
 `;
 
-interface Post {
-  postId: number;
-  postThumbImage: string;
-  title: string;
-  shortContent: string;
-  regDate: string;
-  commentCount: number;
-  userThumbImage: string;
-  nickname: string;
-  likeCount: number;
-}
-
 interface CardsProps {
-  posts: Post[];
+  post: GetPostResponse;
 }
 
-const Cards = ({ posts }: CardsProps) => {
+const Cards = ({ post }: CardsProps) => {
   return (
-    <CardContainer>
-      {posts.map((post) => (
-        <Card key={post.postId}>
-          <CardImage src={post.postThumbImage} alt={post.title} />
-          <CardContent>
-            <Title>{post.title}</Title>
-            <ShortContent>{post.shortContent}</ShortContent>
-            <DateContent>
-              {post.regDate} · {post.commentCount}개의 댓글
-            </DateContent>
-            <Footer>
-              <UserInfo>
-                <UserImage src={post.userThumbImage} alt={post.nickname} />
-                <Nickname>{post.nickname}</Nickname>
-              </UserInfo>
-              <Stats>
-                <Likes>
-                  <HeartIcon /> {post.likeCount}
-                </Likes>
-              </Stats>
-            </Footer>
-          </CardContent>
-        </Card>
-      ))}
-    </CardContainer>
+    <Card key={post.postId}>
+      <CardImage src={post.postThumbImage} alt={post.title} />
+      <CardContent>
+        <Title>{post.title}</Title>
+        <ShortContent>{post.shortContent}</ShortContent>
+        <DateContent>
+          {post.regDate} · {post.commentCount}개의 댓글
+        </DateContent>
+        <Footer>
+          <UserInfo>
+            <UserImage src={post.userThumbImage} alt={post.nickname} />
+            <Nickname>{post.nickname}</Nickname>
+          </UserInfo>
+          <Stats>
+            <Likes>
+              <HeartIcon /> {post.likeCount}
+            </Likes>
+          </Stats>
+        </Footer>
+      </CardContent>
+    </Card>
   );
 };
 
