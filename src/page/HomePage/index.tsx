@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { RiTimeLine, RiWifiLine, RiLineChartLine } from '@remixicon/react';
@@ -6,6 +7,7 @@ import { Select } from 'antd';
 import TrendPage from './TrendPage';
 import FeedPage from './FeedPage';
 import LatestPage from './LatestPage';
+import { headerState } from '../../recoil/atom/utilState';
 
 const Container = styled.div``;
 
@@ -45,34 +47,42 @@ const FlexDiv = styled.div`
 
 const Home = () => {
   const location = useLocation();
+  const setHeader = useSetRecoilState(headerState);
 
   const [activeTab, setActiveTab] = useState(location.pathname);
-
-  useEffect(() => {
-    setActiveTab(location.pathname);
-  }, [location.pathname]);
 
   const handleTabClick = (path: string) => {
     setActiveTab(path);
   };
 
+  useEffect(() => {
+    setActiveTab(location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    setHeader('K-elog');
+  }, []);
   return (
     <Container>
       <Tabs>
         <div>
-          <Tab to="/trend" $isActive={activeTab === '/trend'} onClick={() => handleTabClick('/trend')}>
+          <Tab to="/home/trend" $isActive={activeTab === '/home/trend'} onClick={() => handleTabClick('/home/trend')}>
             <IconWrapper>
               <RiLineChartLine />
             </IconWrapper>
             트렌딩
           </Tab>
-          <Tab to="/latest" $isActive={activeTab === '/latest'} onClick={() => handleTabClick('/latest')}>
+          <Tab
+            to="/home/latest"
+            $isActive={activeTab === '/home/latest'}
+            onClick={() => handleTabClick('/home/latest')}
+          >
             <IconWrapper>
               <RiTimeLine />
             </IconWrapper>
             최신
           </Tab>
-          <Tab to="/feed" $isActive={activeTab === '/feed'} onClick={() => handleTabClick('/feed')}>
+          <Tab to="/home/feed" $isActive={activeTab === '/home/feed'} onClick={() => handleTabClick('/home/feed')}>
             <IconWrapper>
               <RiWifiLine />
             </IconWrapper>

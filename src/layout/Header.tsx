@@ -11,6 +11,8 @@ import Auth from '../component/Auth';
 import { useModal } from '../hooks/custom/useModal';
 import { isLoginSelector } from '../recoil/selector/userSelecotr';
 import { useLogout } from '../hooks/user';
+import StyleButton from '../component/StyleButton';
+import { headerState } from '../recoil/atom/utilState';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -70,42 +72,6 @@ const IconStyle = styled.div`
   }
 `;
 
-const WriteButton = styled.button`
-  padding: 0.5rem 1rem;
-  border: 1px solid #333;
-  background-color: #fff;
-  color: #333;
-  border-radius: 25px;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    padding: 0.3rem 0.6rem;
-  }
-
-  &:hover {
-    background-color: #333;
-    color: #fff;
-  }
-`;
-
-const StyledButton = styled.button`
-  padding: 0.5rem 1rem;
-  border: 1px solid #333;
-  background-color: #fff;
-  color: #333;
-  border-radius: 5px;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    padding: 0.3rem 0.6rem;
-  }
-
-  &:hover {
-    background-color: #333;
-    color: #fff;
-  }
-`;
-
 const FlexDiv = styled.div`
   display: flex;
   align-items: center;
@@ -119,6 +85,7 @@ const LogoDiv = styled.div`
 
 const Header = () => {
   const navigate = useNavigate();
+  const header = useRecoilValue(headerState);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isLogin = useRecoilValue(isLoginSelector);
   const { isModalOpen, openModal } = useModal();
@@ -136,6 +103,10 @@ const Header = () => {
     navigate('/');
   };
 
+  const goToWrite = () => {
+    navigate('/write');
+  };
+
   const handleLogout = () => {
     setAnchorEl(null);
     logout();
@@ -149,7 +120,7 @@ const Header = () => {
           alt="K-elog Logo"
           style={{ width: '30px', marginRight: '0.5rem', marginTop: '-0.3rem' }}
         />
-        <Logo>K-elog</Logo>
+        <Logo>{header}</Logo>
       </LogoDiv>
       <NavIcons>
         <IconStyle>
@@ -160,7 +131,7 @@ const Header = () => {
         </IconStyle>
         {isLogin ? (
           <>
-            <WriteButton>새 글 작성</WriteButton>
+            <StyleButton text="새 글 작성" onClick={goToWrite} />
             <FlexDiv>
               <IconButton onClick={handleClick}>
                 {userData.thumbImage ? <Avatar src={userData.thumbImage} alt="User Profile" /> : <AccountCircle />}
@@ -185,7 +156,7 @@ const Header = () => {
             </FlexDiv>
           </>
         ) : (
-          <StyledButton onClick={openModal}>로그인</StyledButton>
+          <StyleButton onClick={openModal} text="로그인" />
         )}
       </NavIcons>
       {isModalOpen && (
