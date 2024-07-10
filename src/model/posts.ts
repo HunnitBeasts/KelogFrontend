@@ -26,3 +26,29 @@ export interface GetPostsRequest {
   userId?: number;
   fields?: string[];
 }
+
+export interface GetPostDetailResponse {
+  kelogName: string;
+  thumbImage: string;
+  title: string;
+  content: string;
+  regDate: string;
+  tags: {
+    tagName: string;
+  }[];
+  isFollow: boolean;
+  isLike: boolean;
+  nickname: string;
+  beforePost: {
+    postId: number;
+    title: string;
+  };
+  afterPost: {
+    postId: number;
+    title: string;
+  };
+}
+
+export interface GetPostDetailRequest {
+  id: number;
+}

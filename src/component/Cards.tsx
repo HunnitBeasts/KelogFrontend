@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { RiHeartFill } from '@remixicon/react';
 import styled from 'styled-components';
 import { GetPostResponse } from '../model/posts';
@@ -11,6 +12,7 @@ const Card = styled.div`
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 
   @media (max-width: 1080px) {
     width: calc(33.3333% - 1rem);
@@ -108,8 +110,14 @@ interface CardsProps {
 }
 
 const Cards = ({ post }: CardsProps) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/posts/${post.postId}`);
+  };
+
   return (
-    <Card key={post.postId}>
+    <Card key={post.postId} onClick={handleCardClick}>
       <CardImage src={post.postThumbImage} alt={post.title} />
       <CardContent>
         <Title>{post.title}</Title>
